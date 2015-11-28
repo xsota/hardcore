@@ -38,6 +38,8 @@ public class HardcoreListener implements Listener{
 	 */
 	@EventHandler(priority=EventPriority.HIGHEST)
     public void onPlayerDeath(PlayerDeathEvent event) {
+		String DEATH_MESSAGE = event.getDeathMessage();
+		
 		//プレイヤー取得
 		Player player = event.getEntity();
 		
@@ -50,9 +52,9 @@ public class HardcoreListener implements Listener{
 		Date expire = calendar.getTime();
 		
 		//プレイヤーBANリストに追加
-		banList.addBan(player.getName(), event.getDeathMessage(), expire, "Hardcore");
+		banList.addBan(player.getName(), DEATH_MESSAGE, expire, "Hardcore");
 		
 		//BANリストに追加するだけだとそのまま遊べちゃうのでkick
-		player.kickPlayer("");
+		player.kickPlayer(DEATH_MESSAGE);
 	}
 }
