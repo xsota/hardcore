@@ -1,0 +1,10 @@
+name: xsotaHardcore
+main: com.xsota.Hardcore
+version: 0.0.0
+
+commands:
+  selfharm:
+    description: This is a self harm command.
+    usage: /<command>
+    permission: xsotaHardcore.basic
+    permission-message: You don't have <permission>
