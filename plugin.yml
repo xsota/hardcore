@@ -1,7 +1,7 @@
 name: xsotaHardcore
 main: com.xsota.Hardcore
 version: 0.0.0
-
+website: https://github.com/xsota/hardcore
 commands:
   selfharm:
     description: This is a self harm command.
