@@ -12,6 +12,9 @@ public class Hardcore extends JavaPlugin {
 		
 		//set command
 		getCommand("selfharm").setExecutor(new Selfharm());
+		
+		//set listener
+		getServer().getPluginManager().registerEvents(new HardcoreListener(), this);
 	}
 
 	@Override
