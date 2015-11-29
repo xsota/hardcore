@@ -16,7 +16,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.weather.LightningStrikeEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.BlockIterator;
 
 /**
  * リスナクラスだよ
@@ -64,7 +68,7 @@ public class HardcoreListener implements Listener {
 		Location location = player.getLocation();
 		location.setY(location.getY());
 		Block block = location.getBlock();
-
+		
 		block.setType(Material.SIGN_POST);
 		Sign sign = (Sign) block.getState();
 		
@@ -72,18 +76,28 @@ public class HardcoreListener implements Listener {
 		sign.setLine(2, this.getNow());
 		sign.update();
 
+
 		// 次にログインした時に死亡画面だとなんかアレなので強制リスポーン
 		//player.spigot().respawn();
+
 
 		if (player.isOp() == false) {
 			// プレイヤーBANリストに追加
 			banList.addBan(player.getName(), DEATH_MESSAGE, expire, "Hardcore");
-
+			
 			// BANリストに追加するだけだとそのまま遊べちゃうのでkick
 			player.kickPlayer(DEATH_MESSAGE);
 		}
 	}
-
+	
+	@EventHandler
+	public void onLightningStrike(LightningStrikeEvent event){
+		Location location = event.getLightning().getLocation();
+		event.getWorld().createExplosion(location.getX(), location.getY(), location.getZ(), (float) 2, true, true);
+		
+	}
+	
+	
 	private String getNow() {
 		final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		final Date date = new Date(System.currentTimeMillis());
