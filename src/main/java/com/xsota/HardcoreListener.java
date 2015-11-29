@@ -41,7 +41,7 @@ public class HardcoreListener implements Listener{
 		String DEATH_MESSAGE = event.getDeathMessage();
 		
 		//プレイヤー取得
-		Player player = event.getEntity();
+		final Player player = event.getEntity();
 		
 		//banリスト取得		
 		BanList banList = Bukkit.getBanList(BanList.Type.NAME);
@@ -53,6 +53,9 @@ public class HardcoreListener implements Listener{
 		
 		//プレイヤーBANリストに追加
 		banList.addBan(player.getName(), DEATH_MESSAGE, expire, "Hardcore");
+		
+		//次にログインした時に死亡画面だとなんかアレなので強制リスポーン
+		player.spigot().respawn();
 		
 		//BANリストに追加するだけだとそのまま遊べちゃうのでkick
 		player.kickPlayer(DEATH_MESSAGE);
