@@ -73,7 +73,7 @@ public class HardcoreListener implements Listener {
 		sign.update();
 
 		// 次にログインした時に死亡画面だとなんかアレなので強制リスポーン
-		player.spigot().respawn();
+		//player.spigot().respawn();
 
 		if (player.isOp() == false) {
 			// プレイヤーBANリストに追加
