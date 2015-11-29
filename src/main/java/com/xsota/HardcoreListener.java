@@ -1,10 +1,16 @@
 package com.xsota;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -54,6 +60,18 @@ public class HardcoreListener implements Listener {
 		calendar.add(Calendar.HOUR, BAN_TIME);
 		Date expire = calendar.getTime();
 
+		// 死亡時の座標にお墓
+		Location location = player.getLocation();
+		location.setY(location.getY());
+		Block block = location.getBlock();
+
+		block.setType(Material.SIGN_POST);
+		Sign sign = (Sign) block.getState();
+		
+		sign.setLine(1, DEATH_MESSAGE);
+		sign.setLine(2, this.getNow());
+		sign.update();
+
 		// 次にログインした時に死亡画面だとなんかアレなので強制リスポーン
 		player.spigot().respawn();
 
@@ -64,5 +82,11 @@ public class HardcoreListener implements Listener {
 			// BANリストに追加するだけだとそのまま遊べちゃうのでkick
 			player.kickPlayer(DEATH_MESSAGE);
 		}
+	}
+
+	private String getNow() {
+		final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		final Date date = new Date(System.currentTimeMillis());
+		return dateFormat.format(date);
 	}
 }
