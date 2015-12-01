@@ -72,8 +72,9 @@ public class HardcoreListener implements Listener {
 		block.setType(Material.SIGN_POST);
 		Sign sign = (Sign) block.getState();
 		
-		sign.setLine(1, DEATH_MESSAGE);
-		sign.setLine(2, this.getNow());
+		sign.setLine(1, DEATH_MESSAGE.substring(0,21));
+		sign.setLine(2, DEATH_MESSAGE.substring(21));
+		sign.setLine(3, this.getNow());
 		sign.update();
 
 
