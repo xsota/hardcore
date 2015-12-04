@@ -1,0 +1,21 @@
+name: xsotaHardcore
+main: com.xsota.Hardcore
+version: 1.1.2
+author: xsota
+website: https://github.com/xsota/hardcore
+
+commands:
+  selfharm:
+    description: This is a self harm command.
+    usage: /<command>
+    permission: xsotaHardcore.basic    
+    permission-message: You don\'t have <permission>
+
+permissions:
+  xsotaHardcore.*:
+    description: Gives access to all commands
+    children:
+      xsotaHardcore.basic: true
+  xsotaHardcore.basic:
+    description: Gives access to basic commands
+    default: true
