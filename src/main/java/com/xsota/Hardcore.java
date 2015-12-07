@@ -10,11 +10,15 @@ public class Hardcore extends JavaPlugin {
 	public void onEnable() {
 		getLogger().info("plugin has been enable.");
 		
+		//make default config file
+		this.saveDefaultConfig();
+		this.saveConfig();
+		
 		//set command
 		getCommand("selfharm").setExecutor(new Selfharm());
 		
 		//set listener
-		getServer().getPluginManager().registerEvents(new HardcoreListener(), this);
+		getServer().getPluginManager().registerEvents(new HardcoreListener(this), this);
 	}
 
 	@Override

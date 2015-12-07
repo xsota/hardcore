@@ -20,6 +20,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.weather.LightningStrikeEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.BlockIterator;
 
 /**
@@ -30,9 +32,16 @@ import org.bukkit.util.BlockIterator;
  */
 
 public class HardcoreListener implements Listener {
-	int BAN_TIME = 12;
-	String LOGIN_MESSAGE = "このサーバはハードコアです。死ぬと" + BAN_TIME + "時間BANされます";
-
+	int BAN_TIME ;
+	String LOGIN_MESSAGE ;
+	JavaPlugin plugin;
+	
+	public HardcoreListener(JavaPlugin plugin){
+		this.plugin = plugin;
+		BAN_TIME = this.plugin.getConfig().getInt("BANhour");
+		LOGIN_MESSAGE = "このサーバはハードコアです。死ぬと" + BAN_TIME + "時間BANされます";
+	}
+	
 	/**
 	 * ログイン時のイベント
 	 * 
@@ -41,7 +50,9 @@ public class HardcoreListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
-		player.sendMessage(LOGIN_MESSAGE);
+		if(this.plugin.getConfig().getBoolean("ShowLoginMessage")){
+			player.sendMessage(LOGIN_MESSAGE);
+		}
 	}
 
 	/**
