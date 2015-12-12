@@ -102,6 +102,10 @@ public class HardcoreListener implements Listener {
 		}
 	}
 	
+	/**
+	 * 雷が爆発
+	 * @param event
+	 */
 	@EventHandler
 	public void onLightningStrike(LightningStrikeEvent event){
 		Location location = event.getLightning().getLocation();
@@ -109,7 +113,10 @@ public class HardcoreListener implements Listener {
 		
 	}
 	
-	
+	/**
+	 * 現在時刻取得
+	 * @return
+	 */
 	private String getNow() {
 		final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		final Date date = new Date(System.currentTimeMillis());
