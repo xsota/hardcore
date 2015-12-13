@@ -6,6 +6,9 @@
 *.ear
 hs_err_pid*
 /target/
+.project
+.classpath
+.settings
 
 #emacs
 *~
