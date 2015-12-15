@@ -29,8 +29,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.BlockIterator;
 
-
-
 /**
  * リスナクラスだよ
  * 
@@ -39,16 +37,16 @@ import org.bukkit.util.BlockIterator;
  */
 
 public class HardcoreListener implements Listener {
-	int BAN_TIME ;
-	String LOGIN_MESSAGE ;
+	int BAN_TIME;
+	String LOGIN_MESSAGE;
 	JavaPlugin plugin;
-	
-	public HardcoreListener(JavaPlugin plugin){
+
+	public HardcoreListener(JavaPlugin plugin) {
 		this.plugin = plugin;
 		BAN_TIME = this.plugin.getConfig().getInt("BANhour");
 		LOGIN_MESSAGE = "このサーバはハードコアです。死ぬと" + BAN_TIME + "時間BANされます";
 	}
-	
+
 	/**
 	 * ログイン時のイベント
 	 * 
@@ -57,7 +55,7 @@ public class HardcoreListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
-		if(this.plugin.getConfig().getBoolean("ShowLoginMessage")){
+		if (this.plugin.getConfig().getBoolean("ShowLoginMessage")) {
 			player.sendMessage(LOGIN_MESSAGE);
 		}
 	}
@@ -86,59 +84,66 @@ public class HardcoreListener implements Listener {
 		Location location = player.getLocation();
 		location.setY(location.getY());
 		Block block = location.getBlock();
-		
+
 		block.setType(Material.SIGN_POST);
 		Sign sign = (Sign) block.getState();
-		
-		sign.setLine(1, DEATH_MESSAGE.substring(0,21));
-		sign.setLine(2, DEATH_MESSAGE.substring(21));
+
+		if (DEATH_MESSAGE.length() >= 21) {
+			sign.setLine(1, DEATH_MESSAGE.substring(0, 21));
+			sign.setLine(2, DEATH_MESSAGE.substring(21));
+		} else {
+			sign.setLine(1, DEATH_MESSAGE);
+		}
+
 		sign.setLine(3, this.getNow());
 		sign.update();
 
-
 		// 次にログインした時に死亡画面だとなんかアレなので強制リスポーン
-		//player.spigot().respawn();
-
+		// player.spigot().respawn();
 
 		if (player.isOp() == false) {
 			// プレイヤーBANリストに追加
 			banList.addBan(player.getName(), DEATH_MESSAGE, expire, "Hardcore");
-			
+
 			// BANリストに追加するだけだとそのまま遊べちゃうのでkick
 			player.kickPlayer(DEATH_MESSAGE);
 		}
 	}
-	
+
 	/**
 	 * モンスター
+	 * 
 	 * @param event
 	 */
 	@EventHandler
-	public void onSpawn(CreatureSpawnEvent event){
+	public void onSpawn(CreatureSpawnEvent event) {
 		Entity entity = event.getEntity();
 		EntityType entityType = event.getEntityType();
-		
-		if(entityType == EntityType.ZOMBIE){
+
+		if (entityType == EntityType.ZOMBIE) {
 			Zombie zombie = (Zombie) entity;
 			zombie.setCanPickupItems(true);
 			zombie.setMaxHealth(60);
 			zombie.setHealth(60);
 		}
-		
+
 	}
+
 	/**
 	 * 雷が爆発
+	 * 
 	 * @param event
 	 */
 	@EventHandler
-	public void onLightningStrike(LightningStrikeEvent event){
+	public void onLightningStrike(LightningStrikeEvent event) {
 		Location location = event.getLightning().getLocation();
 		event.getWorld().createExplosion(location.getX(), location.getY(), location.getZ(), (float) 2, true, true);
-		
+
 	}
-	
+
 	/**
 	 * 現在時刻取得
+	 * 
 	 * @return
 	 */
 	private String getNow() {
