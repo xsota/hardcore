@@ -134,12 +134,12 @@ public class HardcoreListener implements Listener {
 	 * 
 	 * @param event
 	 */
-	@EventHandler
+	/*@EventHandler
 	public void onLightningStrike(LightningStrikeEvent event) {
 		Location location = event.getLightning().getLocation();
 		event.getWorld().createExplosion(location.getX(), location.getY(), location.getZ(), (float) 2, true, true);
 
-	}
+	}*/
 
 	/**
 	 * 現在時刻取得
