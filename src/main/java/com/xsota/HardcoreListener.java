@@ -11,10 +11,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -125,6 +127,16 @@ public class HardcoreListener implements Listener {
 			zombie.setCanPickupItems(true);
 			zombie.setMaxHealth(60);
 			zombie.setHealth(60);
+			return;
+		}
+		
+		if (entityType == EntityType.SKELETON) {
+			Skeleton skeleton = (Skeleton) entity;
+			skeleton.setCanPickupItems(true);
+			skeleton.setMaxHealth(40);
+			skeleton.setHealth(40);
+			skeleton.getEquipment().setItemInHand(new ItemStack(Material.BOW));
+			return;
 		}
 
 	}
