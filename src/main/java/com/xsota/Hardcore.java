@@ -14,6 +14,9 @@ public class Hardcore extends JavaPlugin {
 		this.saveDefaultConfig();
 		this.saveConfig();
 		
+		//copy new config value
+		getConfig().options().copyDefaults(true);
+		
 		//set command
 		getCommand("selfharm").setExecutor(new Selfharm());
 		
