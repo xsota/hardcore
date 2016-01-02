@@ -1,16 +1,20 @@
 package com.xsota;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -23,8 +27,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.weather.LightningStrikeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -42,11 +48,14 @@ public class HardcoreListener implements Listener {
 	int BAN_TIME;
 	String LOGIN_MESSAGE;
 	JavaPlugin plugin;
-
+	ConsoleCommandSender console;
+	String dateFormat;
 	public HardcoreListener(JavaPlugin plugin) {
+		this.dateFormat = "yyyy/MM/dd HH:mm:ss";
+		this.console = Bukkit.getServer().getConsoleSender();
 		this.plugin = plugin;
-		BAN_TIME = this.plugin.getConfig().getInt("BANhour");
-		LOGIN_MESSAGE = "このサーバはハードコアです。死ぬと" + BAN_TIME + "時間BANされます";
+		this.BAN_TIME = this.plugin.getConfig().getInt("BANhour");
+		this.LOGIN_MESSAGE = "このサーバはハードコアです。死ぬと" + BAN_TIME + "時間BANされます";
 	}
 
 	/**
@@ -75,13 +84,15 @@ public class HardcoreListener implements Listener {
 		final Player player = event.getEntity();
 
 		// banリスト取得
-		BanList banList = Bukkit.getBanList(BanList.Type.NAME);
+		// BanList banList = Bukkit.getBanList(BanList.Type.NAME);
 
 		// BANする時間
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.HOUR, BAN_TIME);
-		Date expire = calendar.getTime();
-
+		//Calendar calendar = Calendar.getInstance();
+		//calendar.add(Calendar.HOUR, BAN_TIME);
+		
+		//Date expire = calendar.getTime();		
+		String expire = new SimpleDateFormat(this.dateFormat).format(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * BAN_TIME));		
+		
 		// 死亡時の座標にお墓
 		Location location = player.getLocation();
 		location.setY(location.getY());
@@ -105,13 +116,43 @@ public class HardcoreListener implements Listener {
 
 		if (player.isOp() == false) {
 			// プレイヤーBANリストに追加
-			banList.addBan(player.getName(), DEATH_MESSAGE, expire, "Hardcore");
-
+			// banList.addBan(player.getName(), DEATH_MESSAGE, expire, "Hardcore");
+			this.plugin.getConfig().set("BAN_PLAYERS."+player.getName(), expire);			
+			this.plugin.saveConfig();						
+	        
 			// BANリストに追加するだけだとそのまま遊べちゃうのでkick
 			player.kickPlayer(DEATH_MESSAGE);
 		}
 	}
-
+	
+	/**
+	 * ban中のプレイヤーはJoinさせない
+	 * @param event
+	 */
+	@EventHandler
+	private void onLogin(PlayerLoginEvent event){
+		String ban = this.plugin.getConfig().getString("BAN_PLAYERS."+event.getPlayer().getName());
+		
+		if(ban == null){
+			return;
+		}
+		
+		Date now = new Date(System.currentTimeMillis());
+	
+		SimpleDateFormat simpleDateFromat = new SimpleDateFormat(this.dateFormat);	        
+	    Date banDate = new Date(); 
+	    
+	    try {
+			banDate = simpleDateFromat.parse(ban);
+		} catch (ParseException e) {
+			this.console.sendMessage("日付変換失敗:"+e);
+		}
+	    
+		if(banDate.compareTo(now) > 0){
+			event.disallow(event.getResult().KICK_OTHER, "まだ死んでから"+this.BAN_TIME+"時間たってないよ");			
+		}
+	}
+	
 	/**
 	 * モンスター
 	 * 
@@ -159,7 +200,7 @@ public class HardcoreListener implements Listener {
 	 * @return
 	 */
 	private String getNow() {
-		final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		final DateFormat dateFormat = new SimpleDateFormat(this.dateFormat);
 		final Date date = new Date(System.currentTimeMillis());
 		return dateFormat.format(date);
 	}
