@@ -2,7 +2,6 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.xsota</groupId>
   <artifactId>hardcore</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
    <build>
    <plugins>
      <plugin>
@@ -27,4 +26,5 @@
        <version>1.8.8-R0.1-SNAPSHOT</version>
      </dependency>
  </dependencies>
+   <version>1</version>
 </project>
