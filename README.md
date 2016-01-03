@@ -1,2 +1,5 @@
 # hardcore
-マイクラの標準のハードコアだとなんかアレなので自分好みのハードコアをつくってみる
+my hardcore
+
+## usage
+$ mvn install
