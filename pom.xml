@@ -26,5 +26,5 @@
        <version>1.8.8-R0.1-SNAPSHOT</version>
      </dependency>
  </dependencies>
-   <version>1</version>
+   <version>for-spigot-1.8.8</version>
 </project>
