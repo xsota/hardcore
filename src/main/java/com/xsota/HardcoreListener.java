@@ -104,7 +104,15 @@ public class HardcoreListener implements Listener {
 
 			sign.setLine(3, this.getNow());
 			sign.update();
-
+			
+			//死亡した座標にゾンビをうみだす
+			EntityType entity = EntityType.ZOMBIE;
+			
+			Zombie zombie = (Zombie) player.getWorld().spawnEntity(location, entity);
+			zombie.setRemoveWhenFarAway(false);
+			zombie.getEquipment().setHelmet(new ItemStack(Material.GOLD_HELMET));
+			zombie.setCustomName(player.getName()+"のゾンビ");			
+			
 			// 次にログインした時に死亡画面だとなんかアレなので強制リスポーン
 			// player.spigot().respawn();
 
