@@ -123,7 +123,7 @@ public class HardcoreListener implements Listener {
 			this.plugin.saveConfig();
 
 			// BANリストに追加するだけだとそのまま遊べちゃうのでkick
-			player.kickPlayer(DEATH_MESSAGE);
+			player.kickPlayer("あなたは死にました\n"+DEATH_MESSAGE);			
 		}
 	}
 
