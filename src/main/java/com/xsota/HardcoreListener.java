@@ -203,7 +203,7 @@ public class HardcoreListener implements Listener {
 			skeleton.setCanPickupItems(true);
 			skeleton.setMaxHealth(40);
 			skeleton.setHealth(40);
-			skeleton.getEquipment().setItemInHand(new ItemStack(Material.BOW));
+			skeleton.getEquipment().setItemInMainHand(new ItemStack(Material.BOW));
 			return;
 		}
 
