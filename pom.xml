@@ -9,7 +9,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<target>1.8</target>
+					<target>1.9</target>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -33,8 +33,8 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.8.8-R0.1-SNAPSHOT</version>
+			<version>1.9.4-R0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
-	<version>for-spigot-1.8.8</version>
+	<version>for-spigot-1.9.4</version>
 </project>

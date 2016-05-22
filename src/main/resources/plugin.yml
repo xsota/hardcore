@@ -1,6 +1,6 @@
 name: xsotaHardcore
 main: com.xsota.Hardcore
-version: 1.4.1
+version: 1.9.4-1
 author: xsota
 website: https://github.com/xsota/hardcore
 
@@ -8,7 +8,7 @@ commands:
   selfharm:
     description: This is a self harm command.
     usage: /<command>
-    permission: xsotaHardcore.basic    
+    permission: xsotaHardcore.basic
     permission-message: You don\'t have <permission>
 
 permissions:
