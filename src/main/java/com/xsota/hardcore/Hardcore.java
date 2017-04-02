@@ -22,10 +22,9 @@
   SOFTWARE.
  */
 
-package com.xsota;
+package com.xsota.hardcore;
 
 import org.bukkit.plugin.java.JavaPlugin;
-
 
 import commands.Selfharm;
 

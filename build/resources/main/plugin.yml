@@ -1,5 +1,5 @@
 name: Hardcore
-version: @version@
+version: 1.9.4
 main: com.xsota.hardcore.Hardcore
 author: xsota
 website: https://github.com/xsota/hardcore
