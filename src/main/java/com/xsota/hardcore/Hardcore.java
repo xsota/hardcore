@@ -24,9 +24,9 @@
 
 package com.xsota.hardcore;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import com.xsota.hardcore.commands.Selfharm;
 
-import commands.Selfharm;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class Hardcore extends JavaPlugin {
 	@Override
