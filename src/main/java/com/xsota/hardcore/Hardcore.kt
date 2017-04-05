@@ -22,36 +22,32 @@
   SOFTWARE.
  */
 
-package com.xsota.hardcore;
+package com.xsota.hardcore
 
-import com.xsota.hardcore.commands.Selfharm;
+import com.xsota.hardcore.commands.Selfharm
 
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPlugin
 
-public class Hardcore extends JavaPlugin {
-	@Override
-	public void onEnable() {
-		getLogger().info("plugin has been enable.");
-		
-		//make default config file
-		this.saveDefaultConfig();
-		this.saveConfig();
-		
-		//copy new config value
-		getConfig().options().copyDefaults(true);
-		
-		//set command
-		getCommand("selfharm").setExecutor(new Selfharm());
-		
-		//set listener
-		getServer().getPluginManager().registerEvents(new HardcoreListener(this), this);
-	}
+class Hardcore : JavaPlugin() {
+  override fun onEnable() {
+    logger.info("plugin has been enable.")
 
-	@Override
-	public void onDisable() {
-		getLogger().info("plugin has been disable.");
-	}
+    //make default config file
+    this.saveDefaultConfig()
+    this.saveConfig()
 
+    //copy new config value
+    config.options().copyDefaults(true)
 
+    //set command
+    getCommand("selfharm").executor = Selfharm()
+
+    //set listener
+    server.pluginManager.registerEvents(HardcoreListener(this), this)
+  }
+
+  override fun onDisable() {
+    logger.info("plugin has been disable.")
+  }
 
 }
