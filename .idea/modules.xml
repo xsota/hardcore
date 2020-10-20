@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/hardcore.iml" filepath="$PROJECT_DIR$/.idea/modules/hardcore.iml" />
       <module fileurl="file://$PROJECT_DIR$/hardcore-plugin.iml" filepath="$PROJECT_DIR$/hardcore-plugin.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/hardcore-plugin_main.iml" filepath="$PROJECT_DIR$/.idea/modules/hardcore-plugin_main.iml" group="hardcore-plugin" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/hardcore-plugin_test.iml" filepath="$PROJECT_DIR$/.idea/modules/hardcore-plugin_test.iml" group="hardcore-plugin" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/hardcore.main.iml" filepath="$PROJECT_DIR$/.idea/modules/hardcore.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/hardcore.test.iml" filepath="$PROJECT_DIR$/.idea/modules/hardcore.test.iml" />
     </modules>
   </component>
 </project>

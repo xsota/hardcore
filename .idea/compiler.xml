@@ -2,8 +2,11 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="hardcore" target="1.8" />
       <module name="hardcore-plugin_main" target="1.8" />
       <module name="hardcore-plugin_test" target="1.8" />
+      <module name="hardcore.main" target="1.8" />
+      <module name="hardcore.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
