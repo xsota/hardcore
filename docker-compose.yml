@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  minecraft:
+    image: xsota/spigot:1.16.3
+    volumes:
+      - ./minecraft:/minecraft/app
+    ports:
+      - "25565:25565"
+    environment:
+      - EULA=true
