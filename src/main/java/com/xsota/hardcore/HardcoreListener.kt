@@ -171,10 +171,12 @@ class HardcoreListener constructor(private val plugin: JavaPlugin) : Listener {
   fun onSpawn(event: CreatureSpawnEvent) {
     val entity = event.entity
     val entityType = event.entityType
-
+    
+    // アイテム拾って欲しい
+    entity.canPickupItems = true
+    
     if (entityType == EntityType.ZOMBIE) {
       val zombie = entity as Zombie
-      zombie.canPickupItems = true
       zombie.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.baseValue = 6.0;
 
       return
@@ -189,7 +191,6 @@ class HardcoreListener constructor(private val plugin: JavaPlugin) : Listener {
 
     if (entityType == EntityType.CREEPER) {
       val creeper = entity as Creeper
-      creeper.canPickupItems = true
       creeper.explosionRadius = 5
 
       return
