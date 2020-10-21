@@ -1,5 +1,6 @@
 name: Hardcore
 version: @version@
+api-version: '1.16'
 main: com.xsota.hardcore.Hardcore
 author: xsota
 website: https://github.com/xsota/hardcore

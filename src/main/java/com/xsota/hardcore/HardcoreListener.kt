@@ -26,8 +26,10 @@ package com.xsota.hardcore
 
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.attribute.Attribute
 import org.bukkit.block.Sign
 import org.bukkit.command.ConsoleCommandSender
+import org.bukkit.entity.Creeper
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Skeleton
 import org.bukkit.entity.Zombie
@@ -79,10 +81,36 @@ class HardcoreListener constructor(private val plugin: JavaPlugin) : Listener {
   fun onPlayerDeath(event: PlayerDeathEvent) {
     // プレイヤー取得
     val player = event.entity
+    val deathMessage = event.deathMessage!!
 
-    if (!player.isOp) {
-      val DEATH_MESSAGE = event.deathMessage
+    // 死亡時の座標にお墓
+    val location = player.location
+    location.y = location.y
+    val block = location.block
 
+    block.type = Material.OAK_SIGN
+    val sign = block.state as Sign
+
+    if (deathMessage.length >= 21) {
+      sign.setLine(1, deathMessage.substring(0, 21))
+      sign.setLine(2, deathMessage.substring(21))
+    } else {
+      sign.setLine(1, deathMessage)
+    }
+
+    sign.setLine(3, this.now)
+    sign.update()
+
+    //死亡した座標にゾンビをうみだす
+    val entity = EntityType.ZOMBIE
+
+    val zombie = player.world.spawnEntity(location, entity) as Zombie
+    zombie.removeWhenFarAway = false
+    zombie.equipment?.helmet = ItemStack(Material.GOLDEN_HELMET)
+    zombie.customName = player.name + "のゾンビ"
+    
+    // いったんhardcore無効 TODO configで無効にできるように
+    if (false && !player.isOp) {
       // Inventory inventory = player.getInventory();
       // banリスト取得
       // BanList banList = Bukkit.getBanList(BanList.Type.NAME);
@@ -95,32 +123,6 @@ class HardcoreListener constructor(private val plugin: JavaPlugin) : Listener {
       val expire = SimpleDateFormat(this.dateFormat)
           .format(Date(System.currentTimeMillis() + 1000 * 60 * 60 * BAN_TIME))
 
-      // 死亡時の座標にお墓
-      val location = player.location
-      location.y = location.y
-      val block = location.block
-
-      block.type = Material.SIGN_POST
-      val sign = block.state as Sign
-
-      if (DEATH_MESSAGE.length >= 21) {
-        sign.setLine(1, DEATH_MESSAGE.substring(0, 21))
-        sign.setLine(2, DEATH_MESSAGE.substring(21))
-      } else {
-        sign.setLine(1, DEATH_MESSAGE)
-      }
-
-      sign.setLine(3, this.now)
-      sign.update()
-
-      //死亡した座標にゾンビをうみだす
-      val entity = EntityType.ZOMBIE
-
-      val zombie = player.world.spawnEntity(location, entity) as Zombie
-      zombie.removeWhenFarAway = false
-      zombie.equipment.helmet = ItemStack(Material.GOLD_HELMET)
-      zombie.customName = player.name + "のゾンビ"
-
       // 次にログインした時に死亡画面だとなんかアレなので強制リスポーン
       // player.spigot().respawn();
 
@@ -131,7 +133,7 @@ class HardcoreListener constructor(private val plugin: JavaPlugin) : Listener {
       this.plugin.saveConfig()
 
       // BANリストに追加するだけだとそのまま遊べちゃうのでkick
-      player.kickPlayer("あなたは死にました\n" + DEATH_MESSAGE)
+      player.kickPlayer("あなたは死にました\n$deathMessage")
     }
   }
 
@@ -173,39 +175,30 @@ class HardcoreListener constructor(private val plugin: JavaPlugin) : Listener {
     if (entityType == EntityType.ZOMBIE) {
       val zombie = entity as Zombie
       zombie.canPickupItems = true
-      zombie.maxHealth = 60.0
-      zombie.health = 60.0
+      zombie.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.baseValue = 6.0;
+
       return
     }
 
     if (entityType == EntityType.SKELETON) {
       val skeleton = entity as Skeleton
       skeleton.canPickupItems = true
-      skeleton.maxHealth = 40.0
-      skeleton.health = 40.0
-      skeleton.equipment.itemInMainHand = ItemStack(Material.BOW)
+
+      return
+    }
+
+    if (entityType == EntityType.CREEPER) {
+      val creeper = entity as Creeper
+      creeper.canPickupItems = true
+      creeper.explosionRadius = 5
+
       return
     }
 
   }
-
-  /**
-   * 雷が爆発
-
-   * @param event
-   */
-  /*
-	 * @EventHandler public void onLightningStrike(LightningStrikeEvent event) {
-	 * Location location = event.getLightning().getLocation();
-	 * event.getWorld().createExplosion(location.getX(), location.getY(),
-	 * location.getZ(), (float) 2, true, true);
-	 *
-	 * }
-	 */
-
+  
   /**
    * 現在時刻取得
-
    * @return
    */
   private val now: String

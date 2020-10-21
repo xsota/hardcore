@@ -40,7 +40,7 @@ class Hardcore : JavaPlugin() {
     config.options().copyDefaults(true)
 
     //set command
-    getCommand("selfharm").executor = Selfharm()
+    getCommand("selfharm")?.setExecutor(Selfharm())
 
     //set listener
     server.pluginManager.registerEvents(HardcoreListener(this), this)

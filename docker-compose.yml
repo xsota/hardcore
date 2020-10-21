@@ -3,6 +3,7 @@ version: "3"
 services:
   minecraft:
     image: xsota/spigot:1.16.3
+    tty: true
     volumes:
       - ./minecraft:/minecraft/app
     ports:
