@@ -86,8 +86,11 @@ class HardcoreListener constructor(private val plugin: JavaPlugin) : Listener {
     // 死亡時の座標にお墓
     val location = player.location
     location.y = location.y
+    if (location.block.type === Material.CHEST) {
+      location.y = location.y + 1
+    }
+    
     val block = location.block
-
     block.type = Material.OAK_SIGN
     val sign = block.state as Sign
 
